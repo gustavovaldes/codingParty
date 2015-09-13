@@ -1,62 +1,31 @@
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 public class Percolation {
 
-
-
-    private WeightedQuickUnionUF matrix;
+    private WeightedQuickUnionUF uf1;
+    private WeightedQuickUnionUF uf2;
 
     private boolean[] records;
-    private boolean[][] full;
-
     private int N;
+    private int top;//virtual top node
+    private int bottom; //virtual bottom node
 
 
-
-    public Percolation(int N) {               // create N-by-N grid, with all
-
-        // sites blocked
-
+    public Percolation(int N) {               // create N-by-N grid, with all sites blocked
         this.N = N;
-
         if (N <= 0) throw new IllegalArgumentException();
-
-        matrix = new WeightedQuickUnionUF(N * N);
-
+        uf1 = new WeightedQuickUnionUF(N * N + 2);
+        uf2 = new WeightedQuickUnionUF(N * N + 1);
         records = new boolean[N * N];
-        full = new boolean[N][N];
-
+        top = N * N;
+        bottom = N * N + 1;
     }
-
 
 
     public static void main(String[] args) { // test client (optional)
 
 
-
     }
-
-
-    private boolean fillFull(int i, int j) {
-        if (full[i][j]) return true;
-        if (i == 1) {
-            full[i][j] = true;
-            return true;
-        }
-        /*arriba*/
-        if (i > 1) {
-            fillFull(i - 1, j);
-        }
-        /*izq*/
-        if (j > 1) {
-            fillFull(i, j - 1);
-        }
-        /*derecha*/
-        if (j < N) {
-            fillFull(i, j + 1);
-        }
-        return false;
-    }
-
-
 
     public void open(int i, int j) {// open site (row i, column j) if it is
 
@@ -66,10 +35,19 @@ public class Percolation {
 
         int pos = calculatePosition(i, j);
 
-        if(records[pos]) return;
+        if (records[pos]) return;
 
         records[pos] = true;
-        //if(i==1) full[pos] =true;
+        if (pos < N) {
+            uf1.union(top, pos);
+            uf2.union(top, pos);
+            //System.out.println("uniendo " + top + " y " + pos);
+        }
+        ;
+        if (pos >= N * (N - 1)) {
+            uf1.union(pos, bottom);
+            //System.out.println("uniendo* " + bottom + " y " + pos);
+        }
 
         int next = 0;
 
@@ -79,9 +57,11 @@ public class Percolation {
 
             next = pos - N;
 
-            if (records[next])
-
-                matrix.union(pos, next);
+            if (records[next]) {
+                uf1.union(pos, next);
+                uf2.union(pos, next);
+                //System.out.println("* " + pos + " y " + next);
+            }
 
         }
 
@@ -93,10 +73,12 @@ public class Percolation {
 
             next = pos + N;
 
-            if (records[next])
+            if (records[next]) {
 
-                matrix.union(pos, next);
-
+                uf1.union(pos, next);
+                uf2.union(pos, next);
+                //System.out.println("* " + pos + " y " + next);
+            }
         }
 
 
@@ -107,9 +89,12 @@ public class Percolation {
 
             next = pos - 1;
 
-            if (records[next])
+            if (records[next]) {
 
-                matrix.union(pos, next);
+                uf1.union(pos, next);
+                uf2.union(pos, next);
+                //System.out.println("* " + pos + " y " + next);
+            }
 
         }
 
@@ -121,14 +106,15 @@ public class Percolation {
 
             next = pos + 1;
 
-            if (records[next])
-
-                matrix.union(pos, next);
+            if (records[next]) {
+                uf1.union(pos, next);
+                uf2.union(pos, next);
+                //System.out.println("* " + pos + " y " + next);
+            }
 
         }
 
     }
-
 
 
     public boolean isOpen(int i, int j) { // is site (row i, column j) open?
@@ -139,47 +125,19 @@ public class Percolation {
 
     }
 
-
-
     public boolean isFull(int i, int j) {// is site (row i, column j) full?
-
+        if (!isOpen(i, j)) return false;
         int pos = calculatePosition(i, j);
-        if(!isOpen(i,j)) return false;
-
-        for (int k = 0; k < N; k++) {
-
-            if(records[k] && matrix.connected(pos, k)) {
-                //full[pos]=true;
-                //full[k]=true;
-                return true;
-            }
-
-        }
-
-        return false;
-
+        return uf2.connected(top, pos);
     }
-
 
 
     public boolean percolates() { // does the system percolate?
 
-        if(N==1) return records[0];
-        for (int i = 0; i < N; i++) {
-
-            for (int j = 1; j <= N; j++) {
-
-                if (records[i] && records[calculatePosition(N, j)] && matrix.connected(i, calculatePosition(N, j)))
-
-                    return true;
-
-            }
-
-        }
-        return false;
+        if (N == 1) return records[0];
+        return uf1.connected(top, bottom);
 
     }
-
 
 
     private void validateRange(int i, int j) {
@@ -189,7 +147,6 @@ public class Percolation {
             throw new IndexOutOfBoundsException();
 
     }
-
 
 
     private int calculatePosition(int i, int j) {
