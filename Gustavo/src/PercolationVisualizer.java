@@ -1,7 +1,7 @@
-/****************************************************************************
+/******************************************************************************
  *  Compilation:  javac PercolationVisualizer.java
  *  Execution:    java PercolationVisualizer input.txt
- *  Dependencies: Percolation.java StdDraw.java In.java
+ *  Dependencies: Percolation.java
  *
  *  This program takes the name of a file as a command-line argument.
  *  From that file, it
@@ -14,14 +14,17 @@
  *  open sites (that aren't full) in white, and blocked sites in black,
  *  with with site (1, 1) in the upper left-hand corner.
  *
- ****************************************************************************/
+ ******************************************************************************/
 
 import java.awt.Font;
+
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class PercolationVisualizer {
 
     // delay in miliseconds (controls animation speed)
-    private static final int DELAY = 10;
+    private static final int DELAY = 100;
 
     // draw N-by-N percolation system
     public static void draw(Percolation perc, int N) {
@@ -59,7 +62,7 @@ public class PercolationVisualizer {
     }
 
     public static void main(String[] args) {
-        In in = new In("input8.txt");      // input file
+        In in = new In("input3.txt");      // input file
         int N = in.readInt();         // N-by-N percolation system
 
         // turn on animation mode
@@ -73,11 +76,8 @@ public class PercolationVisualizer {
             int i = in.readInt();
             int j = in.readInt();
             perc.open(i, j);
-
-
+            draw(perc, N);
+            StdDraw.show(DELAY);
         }
-        draw(perc, N);
-        StdDraw.show(DELAY);
-        System.out.println("finish");
     }
 }
