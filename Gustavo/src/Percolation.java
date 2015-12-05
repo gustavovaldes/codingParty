@@ -7,7 +7,7 @@ public class Percolation {
 
     private boolean[] records;
     private int N;
-    private int top;//virtual top node
+    private int top; //virtual top node
     private int bottom; //virtual bottom node
 
 
@@ -27,7 +27,7 @@ public class Percolation {
 
     }
 
-    public void open(int i, int j) {// open site (row i, column j) if it is
+    public void open(int i, int j) { // open site (row i, column j) if it is
 
         // not open already
 
@@ -43,7 +43,6 @@ public class Percolation {
             uf2.union(top, pos);
             //System.out.println("uniendo " + top + " y " + pos);
         }
-        ;
         if (pos >= N * (N - 1)) {
             uf1.union(pos, bottom);
             //System.out.println("uniendo* " + bottom + " y " + pos);
