@@ -10,6 +10,9 @@ import org.junit.Assert;
  *  10000101 -> parity 1
  *
  *  parity 1 if number of 1s is odd
+ *
+ *
+ *  5.1
  */
 public class Parity {
 
@@ -55,7 +58,7 @@ public class Parity {
     public static short parity2(long num){
         short result =0;
         while(num!=0){
-            result^= 1;
+            result= 1;
             num&=(num-1);//drop lowest set bit
         }
         return result;
@@ -63,6 +66,10 @@ public class Parity {
 
     /**
      * O(logN)
+     *
+     * the key is: parity of firstHalfOfWord xor secondHalfWord = parity of Word
+     * sample:  11010011
+     *  parity of 11010011 = parity of (1101) XOR (0011)
      * @return
      */
     public static short parity3(long num){
