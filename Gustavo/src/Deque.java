@@ -53,7 +53,7 @@ public class Deque<Item> implements Iterable<Item> {
         d.addLast(8);
         d.addLast(9);
 
-        //System.out.println("f");
+        //System.out.println("primitive");
         for (Iterator it = d.iterator(); it.hasNext(); ) {
             System.out.println(it.next());
         }

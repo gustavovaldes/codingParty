@@ -47,7 +47,7 @@ public class Parity {
 
     /**
      * O(k) where k number of 1s in num.
-     *  the key is num&=(num-1) , ot goes to zero in only k iterations!!!
+     *  the key is num&=(num-1) , it goes to zero in only k iterations!!!
      *  sample: start in 9 -> 1001
      *  9&=8  => 8  (1001&1000)=1001
      *  8&=7  => 0  (1001&0111)=0000
@@ -58,7 +58,7 @@ public class Parity {
     public static short parity2(long num){
         short result =0;
         while(num!=0){
-            result= 1;
+            result^= 1;
             num&=(num-1);//drop lowest set bit
         }
         return result;
@@ -79,6 +79,6 @@ public class Parity {
         num ^= num >>>4;
         num ^= num >>>2;
         num ^= num >>>1;
-        return (short)(num & 0x1);
+        return (short)(num & 0x1);//todo why 0x1 and not only 1?
     }
 }
