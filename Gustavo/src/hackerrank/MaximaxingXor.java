@@ -8,9 +8,15 @@ import java.util.Scanner;
 /**
  * @author guga
  * https://www.hackerrank.com/challenges/maximizing-xor/submissions/code/16035803
+ * given l and r, maximize the x xor y  where  l <= x <= y <= r
  */
 public class MaximaxingXor {
 
+    /**
+     * logic:   find the first 1 after the xor, values before that cannot be modified, but all other values yes,
+     * so, just find the first 1, and replace all right values by 1s.
+     *
+     */
     static int maxXor(int l, int r) {
         //todo replace integer method with shift operators
         return  (int)(   Math.pow(2,32 - Integer.numberOfLeadingZeros(l^r)) - 1);
