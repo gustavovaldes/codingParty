@@ -34,7 +34,10 @@ public class GreatesCommonDivisor {
         if (x < 0) x = -x;
         if (y < 0) y = -y;
         if(y==0) return x;
-        return gcd2(y, x%y);
+        if(x>y)
+            return gcd2(y, x%y);
+        else
+            return gcd2(x, y%x);
     }
 
     @Test
