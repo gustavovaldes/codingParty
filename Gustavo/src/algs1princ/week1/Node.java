@@ -1,4 +1,4 @@
-package week1;
+package algs1princ.week1;
 
 public class Node {
     public int value;
